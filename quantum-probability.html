@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Probability | Infinox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same base styles */
+        :root {
+            --deep-purple: #0f0b1d;
+            --dark-purple: #1a1433;
+            --neon-purple: #b026ff;
+            --neon-cyan: #00f5ff;
+            --neon-magenta: #ff00ff;
+            --light-text: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, #0a0618 50%, var(--dark-purple) 100%);
+            color: var(--light-text);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        header { background: rgba(15, 11, 29, 0.8); padding: 20px 0; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-text { font-size: 1.8rem; background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan)); -webkit-background-clip: text; }
+        
+        .module-hero { min-height: 70vh; display: flex; align-items: center; padding: 100px 0 50px; }
+        .gradient-text { background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; }
+        
+        footer { background: rgba(15, 11, 29, 0.9); padding: 60px 0 30px; }
+
+        /* Probability Cloud Styles */
+        .probability-cloud {
+            width: 100%;
+            height: 400px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            border: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .electron-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00f5ff;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .control-group {
+            background: rgba(26, 20, 51, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .control-label {
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .content-card {
+            background: rgba(26, 20, 51, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(0,245,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .probability-map {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            position: relative;
+            background: radial-gradient(circle, rgba(176,38,255,0.1), transparent);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-atom logo-icon"></i>
+                    <div class="logo-text">Infinox</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#modules">Modules</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="module-hero">
+        <div class="container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Modules
+            </a>
+            <div class="module-hero-content">
+                <h1><span class="gradient-text">Quantum Probability Clouds</span></h1>
+                <p>Discover how electrons don't orbit like planets, but exist as fuzzy probability clouds where they might be anywhere!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h2 style="color: var(--neon-cyan); margin-bottom: 20px;">Electron Probability Cloud</h2>
+                <p>In quantum mechanics, we can't say exactly where an electron is - only where it's likely to be. This creates a "probability cloud" around the atom.</p>
+                
+                <div class="probability-cloud" id="probabilityCloud">
+                    <!-- Electron dots will be generated here -->
+                </div>
+
+                <div class="control-panel">
+                    <div class="control-group">
+                        <label class="control-label">Energy Level</label>
+                        <input type="range" id="energyLevel" min="1" max="4" value="1" step="1">
+                        <div id="energyValue">Level 1 (s orbital)</div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Cloud Density</label>
+                        <input type="range" id="cloudDensity" min="50" max="500" value="200">
+                        <div id="densityValue">200 electrons</div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Observation Time</label>
+                        <input type="range" id="observationTime" min="1" max="10" value="5">
+                        <div id="timeValue">5 seconds</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button id="findElectron" style="
+                        background: linear-gradient(90deg, var(--neon-purple), var(--neon-magenta));
+                        color: white;
+                        border: none;
+                        padding: 15px 30px;
+                        border-radius: 25px;
+                        font-size: 1.1rem;
+                        cursor: pointer;
+                        margin: 10px;
+                    ">
+                        <i class="fas fa-search"></i> Find the Electron!
+                    </button>
+                    <div id="electronFound" style="margin: 20px; font-size: 1.2rem; color: var(--neon-cyan);"></div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px;">What Are Probability Clouds?</h3>
+                <p>Unlike planets that follow predictable orbits, electrons exist as probability distributions. The electron cloud shows where we're most likely to find an electron if we look for it.</p>
+                
+                <div style="background: rgba(0,245,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">🎯 Kid-Friendly Explanation:</h4>
+                    <p>Imagine a firefly in a completely dark room. You can't see exactly where it is, but you see flashes of light in different places. After watching for a while, you'll notice it spends more time in some areas than others. That's like an electron probability cloud - we know where it's likely to be, but not exactly where it is at any moment!</p>
+                </div>
+
+                <div class="probability-map">
+                    <canvas id="orbitalCanvas" width="300" height="300"></canvas>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="changeOrbital" style="
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                        border: 1px solid var(--neon-cyan);
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-sync"></i> Change Orbital Shape
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Infinox Quantum Learning Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Quantum Probability Cloud Simulation
+        const cloudContainer = document.getElementById('probabilityCloud');
+        const energyLevelSlider = document.getElementById('energyLevel');
+        const cloudDensitySlider = document.getElementById('cloudDensity');
+        const observationTimeSlider = document.getElementById('observationTime');
+        const energyValue = document.getElementById('energyValue');
+        const densityValue = document.getElementById('densityValue');
+        const timeValue = document.getElementById('timeValue');
+        const findElectronBtn = document.getElementById('findElectron');
+        const electronFound = document.getElementById('electronFound');
+        const changeOrbitalBtn = document.getElementById('changeOrbital');
+
+        const orbitalCanvas = document.getElementById('orbitalCanvas');
+        const ctx = orbitalCanvas.getContext('2d');
+
+        let currentEnergyLevel = 1;
+        let electronCount = 200;
+        let orbitalType = 's';
+        const orbitalTypes = ['s', 'p', 'd', 'f'];
+        let currentOrbitalIndex = 0;
+
+        // Orbital probability functions
+        function sOrbital(x, y, centerX, centerY) {
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const distance = Math.sqrt(dx*dx + dy*dy);
+            return Math.exp(-distance / 50);
+        }
+
+        function pOrbital(x, y, centerX, centerY) {
+            const dx = x - centerX;
+            const dy = y - centerY;
+            return Math.abs(dx) * Math.exp(-(dx*dx + dy*dy) / 4000);
+        }
+
+        function dOrbital(x, y, centerX, centerY) {
+            const dx = x - centerX;
+            const dy = y - centerY;
+            return (dx*dx - dy*dy) * Math.exp(-(dx*dx + dy*dy) / 5000);
+        }
+
+        // Update displays
+        energyLevelSlider.addEventListener('input', (e) => {
+            currentEnergyLevel = parseInt(e.target.value);
+            energyValue.textContent = `Level ${currentEnergyLevel} (${orbitalTypes[currentEnergyLevel-1]} orbital)`;
+            generateCloud();
+        });
+
+        cloudDensitySlider.addEventListener('input', (e) => {
+            electronCount = parseInt(e.target.value);
+            densityValue.textContent = `${electronCount} electrons`;
+            generateCloud();
+        });
+
+        observationTimeSlider.addEventListener('input', (e) => {
+            timeValue.textContent = `${e.target.value} seconds`;
+        });
+
+        // Generate probability cloud
+        function generateCloud() {
+            cloudContainer.innerHTML = '';
+            const centerX = cloudContainer.clientWidth / 2;
+            const centerY = cloudContainer.clientHeight / 2;
+            const size = Math.min(centerX, centerY) * 0.8;
+
+            for (let i = 0; i < electronCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'electron-dot';
+
+                // Different distributions based on energy level
+                let x, y;
+                switch(currentEnergyLevel) {
+                    case 1: // s orbital - spherical
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = Math.random() * size * 0.3;
+                        x = centerX + Math.cos(angle) * radius;
+                        y = centerY + Math.sin(angle) * radius;
+                        break;
+                    case 2: // p orbital - dumbbell shaped
+                        if (Math.random() > 0.5) {
+                            x = centerX + (Math.random() - 0.5) * size * 0.2;
+                            y = centerY + (Math.random() - 0.8) * size * 0.4;
+                        } else {
+                            x = centerX + (Math.random() - 0.5) * size * 0.2;
+                            y = centerY + (Math.random() - 0.2) * size * 0.4;
+                        }
+                        break;
+                    case 3: // d orbital - cloverleaf
+                        const angle2 = Math.random() * Math.PI * 2;
+                        const radius2 = Math.random() * size * 0.5;
+                        x = centerX + Math.cos(angle2) * radius2;
+                        y = centerY + Math.sin(angle2) * radius2;
+                        // Add cloverleaf pattern
+                        if (Math.abs(Math.cos(2 * angle2)) < 0.3) {
+                            x = centerX + (Math.random() - 0.5) * size * 0.1;
+                            y = centerY + (Math.random() - 0.5) * size * 0.1;
+                        }
+                        break;
+                    case 4: // f orbital - complex
+                        x = centerX + (Math.random() - 0.5) * size * 0.6;
+                        y = centerY + (Math.random() - 0.5) * size * 0.6;
+                        break;
+                }
+
+                dot.style.left = x + 'px';
+                dot.style.top = y + 'px';
+                dot.style.opacity = 0.3 + Math.random() * 0.7;
+                
+                cloudContainer.appendChild(dot);
+            }
+        }
+
+        // Find electron button
+        findElectronBtn.addEventListener('click', () => {
+            const dots = document.querySelectorAll('.electron-dot');
+            if (dots.length > 0) {
+                // Pick a random dot to "find"
+                const randomIndex = Math.floor(Math.random() * dots.length);
+                const foundDot = dots[randomIndex];
+                
+                // Highlight the found electron
+                foundDot.style.background = '#ff00ff';
+                foundDot.style.boxShadow = '0 0 20px #ff00ff';
+                foundDot.style.width = '15px';
+                foundDot.style.height = '15px';
+                foundDot.style.zIndex = '1000';
+                
+                electronFound.innerHTML = `
+                    <i class="fas fa-bullseye"></i> 
+                    Electron found at position (${Math.round(parseInt(foundDot.style.left))}, ${Math.round(parseInt(foundDot.style.top))})!
+                    <br><small>But if we look again, it might be somewhere else!</small>
+                `;
+                
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    foundDot.style.background = '#00f5ff';
+                    foundDot.style.boxShadow = 'none';
+                    foundDot.style.width = '8px';
+                    foundDot.style.height = '8px';
+                    electronFound.innerHTML = '';
+                }, 3000);
+            }
+        });
+
+        // Draw orbital shapes
+        function drawOrbital() {
+            ctx.clearRect(0, 0, orbitalCanvas.width, orbitalCanvas.height);
+            const centerX = orbitalCanvas.width / 2;
+            const centerY = orbitalCanvas.height / 2;
+            
+            ctx.strokeStyle = '#00f5ff';
+            ctx.fillStyle = 'rgba(0, 245, 255, 0.1)';
+            ctx.lineWidth = 2;
+            
+            switch(orbitalTypes[currentOrbitalIndex]) {
+                case 's':
+                    // Draw s orbital (circle)
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.fill();
+                    break;
+                case 'p':
+                    // Draw p orbital (dumbbell)
+                    ctx.beginPath();
+                    ctx.ellipse(centerX, centerY - 60, 40, 80, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.ellipse(centerX, centerY + 60, 40, 80, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.fill();
+                    break;
+                case 'd':
+                    // Draw d orbital (cloverleaf)
+                    for (let i = 0; i < 4; i++) {
+                        const angle = (i * Math.PI / 2);
+                        ctx.beginPath();
+                        ctx.ellipse(
+                            centerX + Math.cos(angle) * 50,
+                            centerY + Math.sin(angle) * 50,
+                            30, 60, angle, 0, Math.PI * 2
+                        );
+                        ctx.stroke();
+                        ctx.fill();
+                    }
+                    break;
+                case 'f':
+                    // Draw f orbital (complex)
+                    ctx.beginPath();
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (i * Math.PI / 4);
+                        const radius = i % 2 === 0 ? 70 : 40;
+                        const x = centerX + Math.cos(angle) * radius;
+                        const y = centerY + Math.sin(angle) * radius;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.fill();
+                    break;
+            }
+        }
+
+        changeOrbitalBtn.addEventListener('click', () => {
+            currentOrbitalIndex = (currentOrbitalIndex + 1) % orbitalTypes.length;
+            drawOrbital();
+        });
+
+        // Initialize
+        generateCloud();
+        drawOrbital();
+        window.addEventListener('resize', generateCloud);
+    </script>
+</body>
+</html>

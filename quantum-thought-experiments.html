@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Thought Experiments | Infinox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same base styles */
+        :root {
+            --deep-purple: #0f0b1d;
+            --dark-purple: #1a1433;
+            --neon-purple: #b026ff;
+            --neon-cyan: #00f5ff;
+            --neon-magenta: #ff00ff;
+            --light-text: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, #0a0618 50%, var(--dark-purple) 100%);
+            color: var(--light-text);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        header { background: rgba(15, 11, 29, 0.8); padding: 20px 0; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-text { font-size: 1.8rem; background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan)); -webkit-background-clip: text; }
+        
+        .module-hero { min-height: 70vh; display: flex; align-items: center; padding: 100px 0 50px; }
+        .gradient-text { background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; }
+        
+        footer { background: rgba(15, 11, 29, 0.9); padding: 60px 0 30px; }
+
+        /* Thought Experiments Styles */
+        .experiment-container {
+            background: rgba(26, 20, 51, 0.6);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experiment-visual {
+            width: 100%;
+            height: 300px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .quantum-box {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            background: rgba(176, 38, 255, 0.1);
+            border: 2px solid var(--neon-purple);
+            border-radius: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .experiment-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-magenta));
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(176, 38, 255, 0.4);
+        }
+
+        .content-card {
+            background: rgba(26, 20, 51, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(0,245,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .experiment-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid var(--neon-cyan);
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-magenta));
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-atom logo-icon"></i>
+                    <div class="logo-text">Infinox</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#modules">Modules</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="module-hero">
+        <div class="container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Modules
+            </a>
+            <div class="module-hero-content">
+                <h1><span class="gradient-text">Quantum Mind Benders</span></h1>
+                <p>Explore the fascinating thought experiments that helped scientists understand the weird world of quantum physics!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="experiment-nav">
+                <button class="nav-btn active" data-experiment="schrodinger">Schrödinger's Cat</button>
+                <button class="nav-btn" data-experiment="double-slit">Double Slit</button>
+                <button class="nav-btn" data-experiment="epr">Quantum Entanglement</button>
+            </div>
+
+            <!-- Schrödinger's Cat Experiment -->
+            <div class="experiment-container" id="schrodinger-experiment">
+                <h2 style="color: var(--neon-cyan); text-align: center; margin-bottom: 20px;">Schrödinger's Cat</h2>
+                <p style="text-align: center; margin-bottom: 30px;">Is the cat alive or dead? According to quantum physics, it's both until we look!</p>
+                
+                <div class="experiment-visual">
+                    <div class="quantum-box" id="catBox">
+                        <span id="catState">😼</span>
+                    </div>
+                    <div id="quantumDevice" style="
+                        position: absolute;
+                        top: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: rgba(0,245,255,0.2);
+                        padding: 10px;
+                        border-radius: 5px;
+                        border: 1px solid var(--neon-cyan);
+                    ">
+                        Quantum Trigger
+                    </div>
+                </div>
+
+                <div class="experiment-controls">
+                    <button class="control-btn" id="startExperiment">
+                        <i class="fas fa-play"></i> Start Experiment
+                    </button>
+                    <button class="control-btn" id="openBox">
+                        <i class="fas fa-box-open"></i> Open Box
+                    </button>
+                    <button class="control-btn" id="resetExperiment">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+
+                <div id="experimentStatus" style="
+                    text-align: center;
+                    margin: 20px 0;
+                    padding: 15px;
+                    background: rgba(176,38,255,0.1);
+                    border-radius: 10px;
+                    border: 1px solid var(--neon-purple);
+                ">
+                    The experiment hasn't started yet. The cat is safely outside the box.
+                </div>
+            </div>
+
+            <!-- Double Slit Experiment -->
+            <div class="experiment-container" id="double-slit-experiment" style="display: none;">
+                <h2 style="color: var(--neon-cyan); text-align: center; margin-bottom: 20px;">Double Slit Experiment</h2>
+                <p style="text-align: center; margin-bottom: 30px;">Do particles behave as waves or particles? It depends on whether we're watching!</p>
+                
+                <div class="experiment-visual">
+                    <canvas id="doubleSlitCanvas"></canvas>
+                </div>
+
+                <div class="experiment-controls">
+                    <button class="control-btn" id="fireParticles">
+                        <i class="fas fa-bullseye"></i> Fire Particles
+                    </button>
+                    <button class="control-btn" id="toggleObservation">
+                        <i class="fas fa-eye"></i> Start Observing
+                    </button>
+                    <button class="control-btn" id="clearPattern">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="display: inline-block; text-align: left;">
+                        <div>Observation: <span id="observationStatus">Not observing</span></div>
+                        <div>Pattern: <span id="patternType">Interference pattern (wave behavior)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quantum Entanglement Experiment -->
+            <div class="experiment-container" id="epr-experiment" style="display: none;">
+                <h2 style="color: var(--neon-cyan); text-align: center; margin-bottom: 20px;">Quantum Entanglement</h2>
+                <p style="text-align: center; margin-bottom: 30px;">When two particles are connected, measuring one instantly affects the other, no matter how far apart they are!</p>
+                
+                <div class="experiment-visual">
+                    <div style="position: absolute; left: 20%; top: 50%; transform: translateY(-50%);">
+                        <div class="quantum-box" style="width: 120px; height: 100px;">
+                            <span id="particleA">⚛️</span>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px;">Particle A</div>
+                    </div>
+                    
+                    <div id="connectionLine" style="
+                        position: absolute;
+                        left: 30%;
+                        top: 50%;
+                        width: 40%;
+                        height: 2px;
+                        background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+                    "></div>
+                    
+                    <div style="position: absolute; right: 20%; top: 50%; transform: translateY(-50%);">
+                        <div class="quantum-box" style="width: 120px; height: 100px;">
+                            <span id="particleB">⚛️</span>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px;">Particle B</div>
+                    </div>
+                </div>
+
+                <div class="experiment-controls">
+                    <button class="control-btn" id="entangleParticles">
+                        <i class="fas fa-link"></i> Entangle Particles
+                    </button>
+                    <button class="control-btn" id="measureParticleA">
+                        <i class="fas fa-ruler"></i> Measure Particle A
+                    </button>
+                    <button class="control-btn" id="measureParticleB">
+                        <i class="fas fa-ruler"></i> Measure Particle B
+                    </button>
+                </div>
+
+                <div id="entanglementStatus" style="
+                    text-align: center;
+                    margin: 20px 0;
+                    padding: 15px;
+                    background: rgba(0,245,255,0.1);
+                    border-radius: 10px;
+                    border: 1px solid var(--neon-cyan);
+                ">
+                    Particles are not entangled. Click "Entangle Particles" to connect them.
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px;">Why Thought Experiments Matter</h3>
+                <p>Thought experiments help scientists explore ideas that are too difficult, expensive, or strange to test in real life. They use imagination and logic to understand how the universe might work.</p>
+                
+                <div style="background: rgba(0,245,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">🎯 Kid-Friendly Explanation:</h4>
+                    <p>Thought experiments are like playing "what if" games with the universe! What if a cat could be both alive and dead? What if particles could be in two places at once? These games help scientists discover amazing truths about how our world really works.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; color: var(--neon-cyan);">🤔</div>
+                        <h4 style="color: var(--neon-cyan);">Ask Questions</h4>
+                        <p>Great scientists start by asking "what if" questions about the world</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; color: var(--neon-purple);">💭</div>
+                        <h4 style="color: var(--neon-purple);">Imagine</h4>
+                        <p>They use imagination to explore possibilities that seem impossible</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; color: #ff00ff;">🔍</div>
+                        <h4 style="color: #ff00ff;">Discover</h4>
+                        <p>Through thinking, they discover new truths about the universe</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Infinox Quantum Learning Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Thought Experiments Controller
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const experiments = {
+            'schrodinger': document.getElementById('schrodinger-experiment'),
+            'double-slit': document.getElementById('double-slit-experiment'),
+            'epr': document.getElementById('epr-experiment')
+        };
+
+        // Navigation
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const experiment = e.target.dataset.experiment;
+                
+                // Update active button
+                navButtons.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Show selected experiment
+                Object.values(experiments).forEach(exp => exp.style.display = 'none');
+                experiments[experiment].style.display = 'block';
+            });
+        });
+
+        // Schrödinger's Cat Experiment
+        const catBox = document.getElementById('catBox');
+        const catState = document.getElementById('catState');
+        const startExperimentBtn = document.getElementById('startExperiment');
+        const openBoxBtn = document.getElementById('openBox');
+        const resetExperimentBtn = document.getElementById('resetExperiment');
+        const experimentStatus = document.getElementById('experimentStatus');
+
+        let experimentRunning = false;
+        let catIsAlive = true;
+
+        startExperimentBtn.addEventListener('click', () => {
+            if (!experimentRunning) {
+                experimentRunning = true;
+                experimentStatus.innerHTML = `
+                    <i class="fas fa-flask"></i> Experiment running... The cat is in quantum superposition (both alive and dead)!
+                    <br><small>The quantum trigger might or might not release poison. We won't know until we look!</small>
+                `;
+                catState.textContent = '😼';
+                catBox.style.background = 'rgba(176,38,255,0.3)';
+                catBox.style.animation = 'pulse 2s infinite';
+            }
+        });
+
+        openBoxBtn.addEventListener('click', () => {
+            if (experimentRunning) {
+                experimentRunning = false;
+                catIsAlive = Math.random() > 0.5;
+                
+                if (catIsAlive) {
+                    catState.textContent = '😻';
+                    experimentStatus.innerHTML = `
+                        <i class="fas fa-heart"></i> The cat is ALIVE! 🎉
+                        <br><small>The quantum trigger didn't release poison this time.</small>
+                    `;
+                    catBox.style.background = 'rgba(0,255,0,0.3)';
+                } else {
+                    catState.textContent = '💀';
+                    experimentStatus.innerHTML = `
+                        <i class="fas fa-skull"></i> The cat is DEAD! 😢
+                        <br><small>The quantum trigger released poison. Better luck next time!</small>
+                    `;
+                    catBox.style.background = 'rgba(255,0,0,0.3)';
+                }
+                catBox.style.animation = 'none';
+            }
+        });
+
+        resetExperimentBtn.addEventListener('click', () => {
+            experimentRunning = false;
+            catState.textContent = '😼';
+            experimentStatus.textContent = 'The experiment hasn\'t started yet. The cat is safely outside the box.';
+            catBox.style.background = 'rgba(176,38,255,0.1)';
+            catBox.style.animation = 'none';
+        });
+
+        // Double Slit Experiment
+        const doubleSlitCanvas = document.getElementById('doubleSlitCanvas');
+        const ctx = doubleSlitCanvas.getContext('2d');
+        const fireParticlesBtn = document.getElementById('fireParticles');
+        const toggleObservationBtn = document.getElementById('toggleObservation');
+        const clearPatternBtn = document.getElementById('clearPattern');
+        const observationStatus = document.getElementById('observationStatus');
+        const patternType = document.getElementById('patternType');
+
+        let isObserving = false;
+        let particles = [];
+
+        // Set canvas size
+        function setCanvasSize() {
+            const container = doubleSlitCanvas.parentElement;
+            doubleSlitCanvas.width = container.clientWidth;
+            doubleSlitCanvas.height = container.clientHeight;
+        }
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        class Particle {
+            constructor() {
+                this.x = 50;
+                this.y = doubleSlitCanvas.height / 2 + (Math.random() - 0.5) * 100;
+                this.speed = 2 + Math.random() * 2;
+                this.passedSlits = false;
+            }
+            
+            update() {
+                this.x += this.speed;
+                
+                // Check if particle passes through slits
+                if (!this.passedSlits && this.x > doubleSlitCanvas.width * 0.4) {
+                    this.passedSlits = true;
+                    
+                    if (!isObserving) {
+                        // Wave behavior - interference
+                        const slitCenter = doubleSlitCanvas.height / 2;
+                        const slitOffset = 60;
+                        const distanceToTop = Math.abs(this.y - (slitCenter - slitOffset));
+                        const distanceToBottom = Math.abs(this.y - (slitCenter + slitOffset));
+                        
+                        // Particle goes through both slits (wave behavior)
+                        if (distanceToTop < 30 || distanceToBottom < 30) {
+                            // Add wave interference
+                            this.y += Math.sin(this.x * 0.1) * 20;
+                        }
+                    } else {
+                        // Particle behavior - goes through one slit
+                        const slitCenter = doubleSlitCanvas.height / 2;
+                        const slitOffset = 60;
+                        if (this.y < slitCenter) {
+                            this.y = slitCenter - slitOffset + (Math.random() - 0.5) * 10;
+                        } else {
+                            this.y = slitCenter + slitOffset + (Math.random() - 0.5) * 10;
+                        }
+                    }
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = isObserving ? '#ff00ff' : '#00f5ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animateDoubleSlit() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, doubleSlitCanvas.width, doubleSlitCanvas.height);
+            
+            // Draw slits
+            const slitX = doubleSlitCanvas.width * 0.4;
+            const slitCenter = doubleSlitCanvas.height / 2;
+            const slitOffset = 60;
+            const slitWidth = 80;
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(slitX - 10, 0, 20, slitCenter - slitOffset - slitWidth/2);
+            ctx.fillRect(slitX - 10, slitCenter - slitOffset + slitWidth/2, 20, slitOffset * 2 - slitWidth);
+            ctx.fillRect(slitX - 10, slitCenter + slitOffset + slitWidth/2, 20, doubleSlitCanvas.height);
+            
+            // Update and draw particles
+            particles.forEach((particle, index) => {
+                particle.update();
+                particle.draw();
+                
+                // Remove particles that go off screen
+                if (particle.x > doubleSlitCanvas.width) {
+                    particles.splice(index, 1);
+                }
+            });
+            
+            requestAnimationFrame(animateDoubleSlit);
+        }
+
+        fireParticlesBtn.addEventListener('click', () => {
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle());
+            }
+        });
+
+        toggleObservationBtn.addEventListener('click', () => {
+            isObserving = !isObserving;
+            observationStatus.textContent = isObserving ? 'Observing' : 'Not observing';
+            patternType.textContent = isObserving ? 
+                'Particle pattern (particle behavior)' : 
+                'Interference pattern (wave behavior)';
+            toggleObservationBtn.innerHTML = isObserving ? 
+                '<i class="fas fa-eye-slash"></i> Stop Observing' : 
+                '<i class="fas fa-eye"></i> Start Observing';
+        });
+
+        clearPatternBtn.addEventListener('click', () => {
+            particles = [];
+            ctx.clearRect(0, 0, doubleSlitCanvas.width, doubleSlitCanvas.height);
+        });
+
+        // Quantum Entanglement Experiment
+        const particleA = document.getElementById('particleA');
+        const particleB = document.getElementById('particleB');
+        const entangleParticlesBtn = document.getElementById('entangleParticles');
+        const measureParticleABtn = document.getElementById('measureParticleA');
+        const measureParticleBBtn = document.getElementById('measureParticleB');
+        const entanglementStatus = document.getElementById('entanglementStatus');
+        const connectionLine = document.getElementById('connectionLine');
+
+        let particlesEntangled = false;
+        let particleAState = null;
+        let particleBState = null;
+
+        entangleParticlesBtn.addEventListener('click', () => {
+            particlesEntangled = true;
+            particleAState = null;
+            particleBState = null;
+            particleA.textContent = '⚛️';
+            particleB.textContent = '⚛️';
+            entanglementStatus.innerHTML = `
+                <i class="fas fa-link"></i> Particles are now entangled! 
+                <br><small>Measuring one will instantly determine the state of the other, no matter how far apart they are!</small>
+            `;
+            connectionLine.style.background = 'linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-purple), var(--neon-cyan), transparent)';
+            connectionLine.style.animation = 'pulse 1s infinite';
+        });
+
+        measureParticleABtn.addEventListener('click', () => {
+            if (particlesEntangled) {
+                if (particleAState === null) {
+                    particleAState = Math.random() > 0.5 ? 'up' : 'down';
+                    particleA.textContent = particleAState === 'up' ? '⬆️' : '⬇️';
+                    
+                    if (particleBState === null) {
+                        particleBState = particleAState === 'up' ? 'down' : 'up';
+                        particleB.textContent = particleBState === 'up' ? '⬆️' : '⬇️';
+                    }
+                    
+                    entanglementStatus.innerHTML = `
+                        <i class="fas fa-ruler"></i> Measured Particle A: ${particleAState}
+                        <br><small>Particle B instantly became: ${particleBState}</small>
+                    `;
+                }
+            }
+        });
+
+        measureParticleBBtn.addEventListener('click', () => {
+            if (particlesEntangled) {
+                if (particleBState === null) {
+                    particleBState = Math.random() > 0.5 ? 'up' : 'down';
+                    particleB.textContent = particleBState === 'up' ? '⬆️' : '⬇️';
+                    
+                    if (particleAState === null) {
+                        particleAState = particleBState === 'up' ? 'down' : 'up';
+                        particleA.textContent = particleAState === 'up' ? '⬆️' : '⬇️';
+                    }
+                    
+                    entanglementStatus.innerHTML = `
+                        <i class="fas fa-ruler"></i> Measured Particle B: ${particleBState}
+                        <br><small>Particle A instantly became: ${particleAState}</small>
+                    `;
+                }
+            }
+        });
+
+        // Start animations
+        animateDoubleSlit();
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

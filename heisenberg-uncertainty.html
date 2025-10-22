@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heisenberg Uncertainty | Infinox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same base styles as previous files */
+        :root {
+            --deep-purple: #0f0b1d;
+            --dark-purple: #1a1433;
+            --neon-purple: #b026ff;
+            --neon-cyan: #00f5ff;
+            --neon-magenta: #ff00ff;
+            --light-text: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, #0a0618 50%, var(--dark-purple) 100%);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        header { background: rgba(15, 11, 29, 0.8); padding: 20px 0; position: sticky; top: 0; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-text { font-size: 1.8rem; background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan)); -webkit-background-clip: text; background-clip: text; }
+        
+        .module-hero { min-height: 70vh; display: flex; align-items: center; padding: 100px 0 50px; }
+        .gradient-text { background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; background-clip: text; }
+        
+        footer { background: rgba(15, 11, 29, 0.9); padding: 60px 0 30px; }
+
+        /* Uncertainty Specific Styles */
+        .electron-game {
+            width: 100%;
+            height: 400px;
+            background: rgba(26, 20, 51, 0.6);
+            border-radius: 20px;
+            border: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .electron {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00f5ff, #b026ff);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #00f5ff;
+            transition: all 0.1s ease;
+        }
+
+        .measurement-tool {
+            position: absolute;
+            border: 2px dashed #ff00ff;
+            background: rgba(255, 0, 255, 0.1);
+            pointer-events: none;
+        }
+
+        .uncertainty-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .uncertainty-value {
+            background: rgba(0,245,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--neon-cyan);
+            min-width: 150px;
+        }
+
+        .value-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+
+        .content-card {
+            background: rgba(26, 20, 51, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(0,245,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .game-instructions {
+            background: rgba(176, 38, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid var(--neon-purple);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-atom logo-icon"></i>
+                    <div class="logo-text">Infinox</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#modules">Modules</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="module-hero">
+        <div class="container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Modules
+            </a>
+            <div class="module-hero-content">
+                <h1><span class="gradient-text">Heisenberg's Hide & Seek</span></h1>
+                <p>Learn why quantum particles are the ultimate hide-and-seek champions - the better you know where they are, the less you know how fast they're moving!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h2 style="color: var(--neon-cyan); margin-bottom: 20px;">The Uncertainty Principle Game</h2>
+                
+                <div class="game-instructions">
+                    <h4 style="color: var(--neon-purple); margin-bottom: 10px;">🎮 How to Play:</h4>
+                    <p>Try to measure the electron's position and speed at the same time. The more precisely you measure one, the less you'll know about the other!</p>
+                </div>
+
+                <div class="uncertainty-display">
+                    <div class="uncertainty-value">
+                        <div class="value-label">Position Certainty</div>
+                        <div class="value-number" id="positionCertainty">50%</div>
+                        <div>How well we know WHERE it is</div>
+                    </div>
+                    <div class="uncertainty-value">
+                        <div class="value-label">Speed Certainty</div>
+                        <div class="value-number" id="speedCertainty">50%</div>
+                        <div>How well we know HOW FAST it's going</div>
+                    </div>
+                </div>
+
+                <div class="electron-game" id="electronGame">
+                    <div class="electron" id="electron"></div>
+                    <div class="measurement-tool" id="measurementTool" style="display: none;"></div>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <button id="measurePosition" style="
+                        background: linear-gradient(90deg, var(--neon-purple), var(--neon-magenta));
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 20px;
+                        margin: 0 10px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-bullseye"></i> Measure Position
+                    </button>
+                    <button id="measureSpeed" style="
+                        background: linear-gradient(90deg, #00f5ff, #00ffaa);
+                        color: black;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 20px;
+                        margin: 0 10px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-tachometer-alt"></i> Measure Speed
+                    </button>
+                    <button id="resetGame" style="
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                        border: 1px solid var(--neon-cyan);
+                        padding: 12px 25px;
+                        border-radius: 20px;
+                        margin: 0 10px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px;">Why Can't We Know Everything?</h3>
+                <p>Heisenberg's Uncertainty Principle tells us that there's a fundamental limit to how precisely we can know both the position and speed of a quantum particle at the same time.</p>
+                
+                <div style="background: rgba(0,245,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">🎯 Kid-Friendly Explanation:</h4>
+                    <p>Imagine trying to take a photo of a hummingbird flying really fast. If you use a fast shutter speed to freeze its motion (measure speed), the picture will be blurry and you won't see exactly where it is. If you try to get a clear picture of where it is, you'll miss how fast it's moving! Quantum particles are even trickier than hummingbirds!</p>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="font-size: 1.5rem; color: var(--neon-purple); margin-bottom: 10px;">
+                        Δx · Δp ≥ ℏ/2
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8);">The more certain we are about position (Δx small), the less certain we are about momentum (Δp large), and vice versa!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Infinox Quantum Learning Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Heisenberg Uncertainty Game
+        const electron = document.getElementById('electron');
+        const measurementTool = document.getElementById('measurementTool');
+        const positionCertainty = document.getElementById('positionCertainty');
+        const speedCertainty = document.getElementById('speedCertainty');
+        const measurePositionBtn = document.getElementById('measurePosition');
+        const measureSpeedBtn = document.getElementById('measureSpeed');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const gameContainer = document.getElementById('electronGame');
+        let electronX = 200;
+        let electronY = 200;
+        let electronVX = 2;
+        let electronVY = 1;
+        let positionCertaintyValue = 50;
+        let speedCertaintyValue = 50;
+        let isMeasuring = false;
+
+        function updateElectron() {
+            if (!isMeasuring) {
+                // Move electron
+                electronX += electronVX;
+                electronY += electronVY;
+                
+                // Bounce off walls
+                if (electronX <= 10 || electronX >= gameContainer.clientWidth - 30) {
+                    electronVX = -electronVX;
+                }
+                if (electronY <= 10 || electronY >= gameContainer.clientHeight - 30) {
+                    electronVY = -electronVY;
+                }
+                
+                // Update position with uncertainty
+                const posUncertainty = (100 - positionCertaintyValue) / 20;
+                const displayX = electronX + (Math.random() - 0.5) * posUncertainty;
+                const displayY = electronY + (Math.random() - 0.5) * posUncertainty;
+                
+                electron.style.left = displayX + 'px';
+                electron.style.top = displayY + 'px';
+                
+                // Add blur based on certainty
+                const speedUncertainty = (100 - speedCertaintyValue) / 10;
+                electron.style.filter = `blur(${speedUncertainty}px)`;
+            }
+            
+            requestAnimationFrame(updateElectron);
+        }
+
+        measurePositionBtn.addEventListener('click', () => {
+            if (!isMeasuring) {
+                isMeasuring = true;
+                
+                // Increase position certainty, decrease speed certainty
+                positionCertaintyValue = Math.min(95, positionCertaintyValue + 30);
+                speedCertaintyValue = Math.max(5, speedCertaintyValue - 30);
+                
+                updateDisplays();
+                
+                // Show measurement tool
+                measurementTool.style.display = 'block';
+                measurementTool.style.width = '100px';
+                measurementTool.style.height = '100px';
+                measurementTool.style.left = (electronX - 50) + 'px';
+                measurementTool.style.top = (electronY - 50) + 'px';
+                
+                setTimeout(() => {
+                    isMeasuring = false;
+                    measurementTool.style.display = 'none';
+                }, 1000);
+            }
+        });
+
+        measureSpeedBtn.addEventListener('click', () => {
+            if (!isMeasuring) {
+                isMeasuring = true;
+                
+                // Increase speed certainty, decrease position certainty
+                speedCertaintyValue = Math.min(95, speedCertaintyValue + 30);
+                positionCertaintyValue = Math.max(5, positionCertaintyValue - 30);
+                
+                updateDisplays();
+                
+                // Show speed measurement effect
+                electron.style.animation = 'pulse 0.5s';
+                setTimeout(() => {
+                    electron.style.animation = '';
+                    isMeasuring = false;
+                }, 500);
+            }
+        });
+
+        function updateDisplays() {
+            positionCertainty.textContent = positionCertaintyValue + '%';
+            speedCertainty.textContent = speedCertaintyValue + '%';
+        }
+
+        document.getElementById('resetGame').addEventListener('click', () => {
+            positionCertaintyValue = 50;
+            speedCertaintyValue = 50;
+            updateDisplays();
+            electronX = gameContainer.clientWidth / 2;
+            electronY = gameContainer.clientHeight / 2;
+        });
+
+        // Initialize
+        electron.style.left = electronX + 'px';
+        electron.style.top = electronY + 'px';
+        updateDisplays();
+        updateElectron();
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.5); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
